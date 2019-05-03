@@ -22,11 +22,11 @@ Windows7<br>
 リストアップ後に重複したファイルを１つだけ残し他は削除する。<br>
 
 
-例) python DirectoryCleaner.py -f True -s -100000 -d C:\Users\Default
+例) python DirectoryCleaner.py -f delete -s -100000 -d C:\Users\Default
 
 ■-fオプション<br>
-Trueでファイルを削除する Falseの場合重複ファイルをリストアップするがファイルを削除しない<br>
-(デフォルト値はFalse)<br>
+-f deleteを指定した場合、重複しているファイルを削除します。
+-fを指定しない場合は重複ファイルの調査は行いますが、重複ファイルの削除は行いません。
 
 ■-dオプション<br>
 検索するディレクトリを指定します。<br>

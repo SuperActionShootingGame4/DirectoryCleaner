@@ -58,14 +58,17 @@ def copy_file(dbPath):
 #コンソールプログレスバーを表示する
 def view_progressbar(current_num, length):
 	progress = (current_num/length)*100
-	barRange = math.floor(progress/10)
-	barString = "=" * barRange
-	if(barRange >= 10):
-		print("\r"+ "[" + barString.ljust(10)+ "]" 
-			+ " {0:.0f}%".format(progress)+" Complete")
+	scale = 5
+	barCurLength = math.floor(progress/scale)
+	barMaxLength = math.floor(100/scale)
+	barString = "=" * barCurLength
+	
+	if(barCurLength < barMaxLength):
+		endChar = ""
 	else:
-		print("\r"+ "[" + barString.ljust(10)+ "]" 
-			+ " {0:.0f}%".format(progress), end="")
+		endChar = "\n"
+	print("\r"+ "[" + barString.ljust(barMaxLength)+ "]" 
+			+ " {0:.0f}%".format(progress), end=endChar)
 	return
 
 #ファイルリストのDBを作成 (ファイルのMD5ハッシュ取得)
@@ -137,7 +140,7 @@ def check_duplicate(dbPath, csvPath, deleteFlag):
 				if os.path.isfile(tmp[j][2]):
 					write_csv(csvPath, tmp[j])
 					cursor.execute(u"DELETE FROM fileListTable WHERE id=%s" % tmp[j][0])	
-					if deleteFlag:
+					if deleteFlag == "delete":
 						os.remove(tmp[j][2])
 			view_progressbar(i+1, len(fileListTable))
 	return True
@@ -151,9 +154,9 @@ def get_option():
 	argparser.add_argument('-s', '--Size', type=int,
 						   default="0",
 						   help='file size + upper, - lower')
-	argparser.add_argument('-f', '--DeleteFlag', type=bool,
-						   default=False,
-						   help='Do not delete files')
+	argparser.add_argument('-f', '--DeleteFlag', type=str,
+						   default="nop",
+						   help='delete flag')
 	arg = argparser.parse_args()
 	return arg
 
