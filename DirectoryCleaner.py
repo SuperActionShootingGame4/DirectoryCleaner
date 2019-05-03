@@ -145,12 +145,15 @@ def check_duplicate(dbPath, csvPath, deleteFlag):
 #コマンド引数解析
 def get_option():
 	argparser = ArgumentParser()
-	argparser.add_argument('-d', '--dir', type=str,
+	argparser.add_argument('-d', '--Dir', type=str,
 						   default="C:\\test",
 						   help='target path')
-	argparser.add_argument('-s', '--size', type=int,
+	argparser.add_argument('-s', '--Size', type=int,
 						   default="0",
 						   help='file size + upper, - lower')
+	argparser.add_argument('-f', '--DeleteFlag', type=bool,
+						   default=False,
+						   help='Do not delete files')
 	arg = argparser.parse_args()
 	return arg
 
@@ -158,15 +161,17 @@ def get_option():
 if __name__ == '__main__':
 	#path = "C:\\test"
 	args = get_option()
-	targetPath = args.dir
-	FILE_SIZE = args.size
-	fileList = listup_files(args.dir)
+	targetPath = args.Dir
+	FILE_SIZE = args.Size
+	deleteFlag = args.DeleteFlag
+
+	fileList = listup_files(targetPath)
 	paths = make_path(targetPath)
 	dbPath = paths[0]
 	csvPath = paths[1]
 	create_db(fileList, dbPath, csvPath)
 	copy_file(dbPath)
-	check_duplicate(dbPath, csvPath, False)
+	check_duplicate(dbPath, csvPath, deleteFlag)
 	#for i in range(len(list)):
 	#	print(list[i])
 	
