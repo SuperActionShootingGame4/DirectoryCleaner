@@ -129,8 +129,10 @@ def check_duplicate(dbPath, csvPath, deleteFlag):
 
 		#DBからファイルリストを取得する
 		write_csv(csvPath, ["========================================"])
-		write_csv(csvPath, ["Duplicate File"])
+		write_csv(csvPath, ["Duplicate File List"])
 		write_csv(csvPath, ["========================================"])
+		
+		totalFileSize = 0
 		for i in range(len(fileListTable)):
 			select_sql = "SELECT * FROM fileListTable WHERE file_md5 = '%s' " % fileListTable[i][7]
 			cursor.execute(select_sql)
@@ -140,9 +142,11 @@ def check_duplicate(dbPath, csvPath, deleteFlag):
 				if os.path.isfile(tmp[j][2]):
 					write_csv(csvPath, tmp[j])
 					cursor.execute(u"DELETE FROM fileListTable WHERE id=%s" % tmp[j][0])	
+					totalFileSize += tmp[j][4]
 					if deleteFlag == "delete":
-						os.remove(tmp[j][2])
+						os.remove(tmp[j][2])	
 			view_progressbar(i+1, len(fileListTable))
+		write_csv(csvPath, ["Total Duplicate File Size", totalFileSize])
 	return True
 
 #コマンド引数解析
