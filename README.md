@@ -16,7 +16,7 @@
 Python3.6以上
 Windows7
 
-■仕様例
+■使用例
 
 python DirectoryCleaner.py -d C:\Users\Default
 -dオプション(--dir)でディレクトリを指定します。
